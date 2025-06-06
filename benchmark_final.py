@@ -113,9 +113,7 @@ def format_solution(sol):
 
 
 # Main benchmarking function
-def benchmark_methods(
-    test_cases, timeout, tolerance=1e-6, checkpoint_file="results.csv"
-):
+def benchmark_methods(test_cases, timeout, tolerance=1e-6, output_file="results.csv"):
     results = []
 
     # Loop over the test cases
@@ -211,25 +209,23 @@ def benchmark_methods(
 
             # Append to CSV, only write header if the file doesn't exist
             try:
-                with open(checkpoint_file, "r") as f:
+                with open(output_file, "r") as f:
                     file_exists = True
             except FileNotFoundError:
                 file_exists = False
 
             results_df.to_csv(
-                checkpoint_file, mode="a", header=not file_exists, index=False
+                output_file, mode="a", header=not file_exists, index=False
             )
-            print(f"Checkpoint saved after {test_idx + 1} tests to {checkpoint_file}")
+            print(f"Checkpoint saved after {test_idx + 1} tests to {output_file}")
 
             # Clear results list to free memory
             results = []
 
     if results:
         results_df = pd.DataFrame(results)
-        results_df.to_csv(
-            checkpoint_file, mode="a", header=not file_exists, index=False
-        )
-        print(f"Final checkpoint saved to {checkpoint_file}")
+        results_df.to_csv(output_file, mode="a", header=not file_exists, index=False)
+        print(f"Final checkpoint saved to {output_file}")
 
 
 if __name__ == "__main__":
